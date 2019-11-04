@@ -1,38 +1,46 @@
 window.onload = function () {
-    document.getElementById("fundraise_remainingText").innerHTML = "80";
-    fundraise = document.getElementById("fundraise_amount").value;
+   init();
 };
-// document.getElementById("fundraise_remainingText").innerHTML = "8";
-//
-// var progressBarValue = Number(document.getElementById("fundraise_progressBar").offsetWidth);
-// console.log(progressBarValue);
-//
-// var progressBarPercentValue = progressBarValue * (100/250);
-// console.log(progressBarPercentValue);
-// var currentValue = 1000 - (progressBarPercentValue/100) * 1000;
-// console.log(currentValue);
-// document.getElementById("fundraise_currentFundingText").innerHTML = currentValue;
-//
-//
+
+function init() {
+    fundraise = document.getElementById("fundraise_amount").value;
+    progressBarValue = Number(document.getElementById("fundraise_progressBar").offsetWidth);
+    console.log(progressBarValue);
+    progressBarPercentValue = getPercentOfValueOf(progressBarValue, 250);
+    console.log('percent of 250 is ' + progressBarPercentValue);
+    valueOfProgressBar = Math.round(getValueOfPercent(progressBarPercentValue, 1000));
+    console.log(valueOfProgressBar);
+
+    document.getElementById("fundraise_currentFundingText").innerHTML = valueOfProgressBar;
+    document.getElementById("fundraise_remainingText").innerHTML = 1000 - valueOfProgressBar;
+}
+
 function myFunction() {
-    if (document.getElementById("fundraise_progressBar").offsetWidth > 249) {
+    var progressBarValue = Number(document.getElementById("fundraise_progressBar").offsetWidth);
+    if (progressBarValue > 249) {
         return;
     }
     var fundraise = document.getElementById("fundraise_amount").value;
-    // raise = (100 / 1000) * (Number(fundraise));
-    raise = getPercentOfValueOf(Number(fundraise), 1000);
-    console.log('Input is'+raise+'% of 1000');
+    raiseInPercents = getPercentOfValueOf(Number(fundraise), 1000);
+    console.log('Input is'+raiseInPercents+'% of 1000');
 
-    var raiseBy = (raise / 100) * 250;
+    // var raiseBy = (raiseInPercents / 100) * 250;
+    var raiseBy = getValueOfPercent(raiseInPercents, 250);
     console.log(raiseBy);
-    var progressBarPercent = Number(document.getElementById("fundraise_progressBar").offsetWidth) + raiseBy;
-    console.log('progres' + progressBarPercent);
-    document.getElementById("fundraise_progressBar").style.width = progressBarPercent + 'px';
+    progressBarValue += raiseBy;
+    console.log('progres' + progressBarValue);
+    if (progressBarValue > 250) {
+        progressBarValue = 250;
+    }
+    document.getElementById("fundraise_progressBar").style.width = progressBarValue + 'px';
+    init();
 }
 
 function getPercentOfValueOf(percent, percentOf) {
     return (100 / percentOf) * percent;
 }
 
-//
-// document.getElementById("fundraise_amount").value = "500";
+function getValueOfPercent(percent, maxValue) {
+    return (percent / 100) * maxValue;
+}
+
