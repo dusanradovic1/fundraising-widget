@@ -62,7 +62,7 @@ function setInputFilter(textbox, inputFilter) {
 function goalIsRised() {
     document.getElementById('fundraise_progressBar').style.backgroundColor = '#1CBC2C';
     hidePledgeButtons();
-    setTimeout(() => {
+    setTimeout(function () {
         alert('all money is gathered');
     },500)
 }
